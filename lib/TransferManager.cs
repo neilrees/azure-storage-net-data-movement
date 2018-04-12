@@ -25,7 +25,37 @@ namespace Microsoft.WindowsAzure.Storage.DataMovement
         /// <summary>
         /// Transfer scheduler that schedules execution of transfer jobs
         /// </summary>
-        private static TransferScheduler scheduler = new TransferScheduler();
+        private static TransferScheduler scheduler;
+
+        private static object locker = new object();
+
+        static TransferScheduler Scheduler
+        {
+            get
+            {
+                if (scheduler == null)
+                {
+                    lock (locker)
+                    {
+                        if (scheduler == null)
+                        {
+                            scheduler = new TransferScheduler();
+                        }
+                    }
+                }
+
+                return scheduler;
+            }
+        }
+
+        public static void Shutdown()
+        {
+            lock (locker)
+            {
+                scheduler?.Dispose();
+                scheduler = null;
+            }
+        }
 
         /// <summary>
         /// Transfer configurations associated with the transfer manager
@@ -1260,7 +1290,7 @@ namespace Microsoft.WindowsAzure.Storage.DataMovement
 
                 try
                 {
-                    await transfer.ExecuteAsync(scheduler, cancellationToken);
+                    await transfer.ExecuteAsync(Scheduler, cancellationToken);
                 }
                 finally
                 {
