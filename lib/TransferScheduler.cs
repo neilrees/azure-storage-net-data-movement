@@ -318,17 +318,17 @@ namespace Microsoft.WindowsAzure.Storage.DataMovement
 
                     if (disposing)
                     {
-                        if (null != this.controllerQueue)
-                        {
-                            this.controllerQueue.Dispose();
-                            this.controllerQueue = null;
-                        }
+                        //if (null != this.controllerQueue)
+                        //{
+                        //    this.controllerQueue.Dispose();
+                        //    this.controllerQueue = null;
+                        //}
 
-                        if (null != this.cancellationTokenSource)
-                        {
-                            this.cancellationTokenSource.Dispose();
-                            this.cancellationTokenSource = null;
-                        }
+                        //if (null != this.cancellationTokenSource)
+                        //{
+                        //    this.cancellationTokenSource.Dispose();
+                        //    this.cancellationTokenSource = null;
+                        //}
 
                         if (null != this.controllerResetEvent)
                         {
